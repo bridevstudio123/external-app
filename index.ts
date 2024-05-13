@@ -22,8 +22,8 @@ app.use(session({
 
 app.use(passport.initialize()) // init passport on every route call
 app.use(passport.session()) 
-const clientID = "portal";
-const clientSecret = "Aithoo1Yu7Poohu8phohqu2xih2vi1ei";
+const clientID = "external-app-1";
+const clientSecret = "secret";
 
 passport.use(
   new OpenIDConnectStrategy(
@@ -57,6 +57,7 @@ app.get(
     failureMessage: true,
   }),
   function (req, res) {
+    console.log(req, `req`)
     res.redirect("/");
   }
 );
