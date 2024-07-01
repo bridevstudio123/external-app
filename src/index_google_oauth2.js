@@ -1,20 +1,20 @@
-import passport from "passport";
-import express, {
-	Express,
-	Request,
-	Response,
-	Application,
-	NextFunction,
-} from "express";
-import dotenv from "dotenv";
+const express = require("express");
+const path = require("path");
+
+const dotenv = require("dotenv");
+const passport = require("passport");
+const session = require("express-session");
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 
 //For env File
 dotenv.config();
 
-const app: Application = express();
+const app = express();
 const port = process.env.PORT || 3000;
 const session = require("express-session");
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 app.use(
 	session({
@@ -27,13 +27,7 @@ app.use(
 app.use(passport.initialize()); // init passport on every route call
 app.use(passport.session()); //allow passport to use "express-session"
 
-const authUser = (
-	request: any,
-	accessToken: any,
-	refreshToken: any,
-	profile: any,
-	done: any
-) => {
+const authUser = (request, accessToken, refreshToken, profile, done) => {
 	console.log("login =>", profile);
 
 	return done(null, profile);
@@ -54,11 +48,9 @@ passport.serializeUser((user, done) => {
 	done(null, user);
 });
 
-passport.deserializeUser(
-	(user: false | Express.User | null | undefined, done) => {
-		done(null, user);
-	}
-);
+passport.deserializeUser((user, done) => {
+	done(null, user);
+});
 
 app.get(
 	"/auth/google",
@@ -79,7 +71,7 @@ app.get("/login", (req, res) => {
 });
 
 // Use the req.isAuthenticated() function to check if user is Authenticated
-const checkAuthenticated = (req: any, res: any, next: any) => {
+const checkAuthenticated = (req, res, next) => {
 	if (req.isAuthenticated()) {
 		return next();
 	}
@@ -88,13 +80,13 @@ const checkAuthenticated = (req: any, res: any, next: any) => {
 };
 
 // Define the Protected Route, by using the "checkAuthenticated" function defined above as middleware
-app.get("/dashboard", checkAuthenticated, (req: any, res) => {
+app.get("/dashboard", checkAuthenticated, (req, res) => {
 	res.render("dashboard.ejs", { name: req.user.displayName });
 });
 
 //Define the Logout
-app.post("/logout", (req: any, res, next) => {
-	req.logout((err: any) => {
+app.post("/logout", (req, res, next) => {
+	req.logout((err) => {
 		if (err) {
 			return next(err);
 		}
@@ -103,7 +95,7 @@ app.post("/logout", (req: any, res, next) => {
 	});
 });
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
 	res.send("Welcome to Express & TypeScript Server");
 });
 

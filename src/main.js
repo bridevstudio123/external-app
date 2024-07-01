@@ -1,14 +1,19 @@
-import passport from "passport";
-import express, { Application, Request, Response } from "express";
-import dotenv from "dotenv";
+const express = require("express");
+const path = require("path");
+
+const dotenv = require("dotenv");
+const passport = require("passport");
+const OpenIDConnectStrategy = require("passport-openidconnect");
+const session = require("express-session");
 
 //For env File
 dotenv.config();
 
-const app: Application = express();
+const app = express();
 const port = process.env.PORT || 3000;
-const OpenIDConnectStrategy = require("passport-openidconnect");
-const session = require("express-session");
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 app.use(
 	session({
@@ -32,11 +37,7 @@ passport.use(
 			clientID: process.env.CLIENT_ID,
 			clientSecret: process.env.CLIENT_SECRET,
 		},
-		function verify(
-			issuer: any,
-			profile: { id: any },
-			cb: (arg0: null, arg1: any) => any
-		) {
+		function verify(issuer, profile, cb) {
 			return cb(null, {
 				name: "this is me",
 			});
@@ -48,14 +49,12 @@ passport.serializeUser((user, done) => {
 	done(null, user);
 });
 
-passport.deserializeUser(
-	(user: false | Express.User | null | undefined, done) => {
-		done(null, user);
-	}
-);
+passport.deserializeUser((user, done) => {
+	done(null, user);
+});
 
 // Use the req.isAuthenticated() function to check if user is Authenticated
-const checkAuthenticated = (req: any, res: any, next: any) => {
+const checkAuthenticated = (req, res, next) => {
 	if (req.isAuthenticated()) {
 		return next();
 	}
@@ -63,14 +62,14 @@ const checkAuthenticated = (req: any, res: any, next: any) => {
 };
 
 // Define the Protected Route, by using the "checkAuthenticated" function defined above as middleware
-app.get("/dashboard", checkAuthenticated, (req: any, res) => {
+app.get("/dashboard", checkAuthenticated, (req, res) => {
 	console.log("===user===", req.user);
 	res.render("dashboard.ejs", { name: req.user.displayName });
 });
 
 //Define the Logout
-app.post("/logout", (req: any, res, next) => {
-	req.logout((err: any) => {
+app.post("/logout", (req, res, next) => {
+	req.logout((err) => {
 		if (err) {
 			return next(err);
 		}
@@ -92,7 +91,7 @@ app.get(
 	}
 );
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
 	res.send("Welcome to Express & TypeScript Server");
 });
 
