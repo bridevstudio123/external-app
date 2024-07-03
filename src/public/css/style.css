@@ -1,0 +1,69 @@
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar {
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  flex: 1;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.auth-links {
+  position: absolute;
+  right: 1em;
+}
+
+.auth-links a, .auth-links form {
+  display: inline-block;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: 2em; /* Add some padding at the top */
+}
+
+.main-content h1 {
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.main-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.main-content ul li {
+  font-size: 1.2em;
+  margin-top: 0.5em;
+}

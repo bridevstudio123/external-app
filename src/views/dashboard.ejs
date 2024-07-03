@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Document</title>
-</head>
-<body>
-     <h1> <%= name %> is logged in </h1>
-  
-<form action="/logout" method="POST">
-     <button type="submit"> Logout </button>
-</form>
-<script>
-     System.import("aurelia-bootstrapper");
-</script>
-</body>
-</html>
+<div class="main-content">
+	<h1>Welcome To The Dashboard of External Apps</h1>
+	<h1><%= name %></h1>
+	<ul>
+		<li>
+			<a href="<%= externalApp1 %>/login?user=<%= name %>">External App 1</a>
+		</li>
+	</ul>
+</div>
